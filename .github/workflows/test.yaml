@@ -1,0 +1,40 @@
+name: Deployment feature environments
+
+on:
+  pull_request:
+    types: [labeled, unlabeled, synchronize, closed]
+
+jobs:
+  delete_resources:
+    name: Delete resources
+    runs-on: ubuntu-22.04
+    if: >
+      (
+        (github.event.label.name == '[feature] backend' || github.event.label.name == '[feature] backend-ha' )
+        && github.event.action == 'unlabeled'
+      )
+      || (
+        github.event.action == 'closed' 
+          && (
+            contains(github.event.pull_request.labels.*.name, '[feature] backend') 
+            || contains(github.event.pull_request.labels.*.name, '[feature] backend-ha')
+          )
+      )
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
+
+      - name: Check if CloudFormation stack exists
+        id: check-stack
+        run: |
+          aws cloudformation describe-stacks --stack-name "pd-backend-feat-${{env.task_id}}"
+        continue-on-error: true
+
+      - name: Delete CloudFormation stack
+        if: ${{ steps.check-stack.outcome == 'success' }}      
+        run: |
+          aws cloudformation delete-stack --stack-name "pd-backend-feat-${{env.task_id}}"
+
