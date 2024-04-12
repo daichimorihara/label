@@ -44,18 +44,22 @@ jobs:
   third:
     name: third test
     runs-on: ubuntu-22.04
-    if: >
-      (
-        github.event.action == 'closed' 
-          && (
-            github.event.pull_request.labels.*.name == *'[feature] backend'*
-            ||github.event.pull_request.labels.*.name == *'[feature] backend-ha'*)
-          )
-      )
     permissions:
       contents: read
       id-token: write
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - run: echo "merged"
+      - run: |
+          if [[ ${{ github.event.pull_request.labels.*.name }} == *"[feature] backend"* ]]; then
+            echo "label included"
+          fi
+
+      - run: |
+          if [[ ${{ github.event.pull_request.labels.*.name }} == *"[feature] backend-ha"* ]]; then
+            echo "label included"
+          fi
+
+
+
+
