@@ -16,6 +16,7 @@ jobs:
           ./scripts/test.sh
 
   two:
+    needs: one
     name: just echo2
     runs-on: ubuntu-22.04
     permissions:
