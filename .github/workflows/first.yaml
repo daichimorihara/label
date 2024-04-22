@@ -1,0 +1,16 @@
+name: First
+on:
+  pull_request:
+jobs:
+  one:
+    name: just echo
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
+      - run: |
+          ./scripts/test.sh
+
