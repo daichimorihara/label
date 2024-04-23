@@ -24,7 +24,7 @@ jobs:
       - run: echo "${{ github.event.pull_request.labels.*.name }}"
       - name: delete front feature env
         run: |          
-          labels=('[feature] clmgt' '[feature] customer')
+          labels=('[feature] backend' '[feature] backend-ha')
           repos=(park-direct-front-client park-direct-front-customer)
           workflow_ids=(deploy_feature_environments.yaml  deploy_feature_environments.yml)
           ACTION="remove"
