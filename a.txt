@@ -1,0 +1,16 @@
+commit 3b7136ff8bce7cb2bb221a13d64b53b2d582e050
+Merge: e6314ee 2868076
+Author: Daichi Morihara <65201094+daichimorihara@users.noreply.github.com>
+Date:   Fri Apr 12 21:33:38 2024 +0900
+
+    Merge pull request #3 from daichimorihara/feature
+    
+    Feature
+
+git checkout -b
+git log -n 1 > hash.txt
+head -n 1 head.txt 
+
+git log -n 1 | head -n 1 | awk -F '[ ]' '{print $2}'
+
+hash=$(git log -n 1 | head -n 1 | awk -F '[ ]' '{print $2}')
