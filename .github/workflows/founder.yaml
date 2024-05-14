@@ -21,6 +21,14 @@ on:
         type: string
       environment:
         description: 'Environment to run tests against'
+      auto-start:
+        required: true
+        type: boolean
+        description: "自動起動させるならチェック"
+      need-snapshot:
+        required: true
+        type: boolean
+        description: "削除前のsnapshotが必要ならチェック"
 
 
 env:
@@ -36,6 +44,5 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - run: echo ${{ env.OWNER }}
-      - run: echo "OWNER=$GITHUB_ACTOR" >> $GITHUB_ENV
-      - run: echo ${{ env.OWNER }}
+      - run: echo "${{ github.event.inputs.need-snapshot }}"
+      - run: echo "${{ github.event.inputs.auto-start }}"
