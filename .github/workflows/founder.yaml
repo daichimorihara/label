@@ -16,7 +16,7 @@ on:
       cluster-number:
         description: "clusterの識別子(複数作る場合には重複に注意)"
         required: true
-        default: 'warning'
+        default: '1'
       auto-start:
         description: "DBを9時に自動起動させるならチェック"
         required: true
