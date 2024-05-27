@@ -3,33 +3,28 @@ name: Founder
 on:
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
+      action:
+        description: "deploy or remove"
         required: true
         type: choice
         options:
-          - info
-          - warning
-          - debug
-      print_tags:
-        description: 'True to print to STDOUT'
+          - deploy
+          - remove
+      ticket:
+        description: "JIRAチケット名(ex:SRE-2371)"
         required: true
-        type: boolean
-      tags:
-        description: 'Test scenario tags'
+      cluster-number:
+        description: "clusterの識別子(複数作る場合には重複に注意)"
         required: true
-        type: string
-      environment:
-        description: 'Environment to run tests against'
+        default: 'warning'
       auto-start:
+        description: "DBを9時に自動起動させるならチェック"
         required: true
         type: boolean
-        description: "自動起動させるならチェック"
       need-snapshot:
+        description: "削除前のsnapshotが必要ならチェック"
         required: true
         type: boolean
-        description: "削除前のsnapshotが必要ならチェック"
-
 
 env:
   OWNER: steve
