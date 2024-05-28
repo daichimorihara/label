@@ -1,14 +1,13 @@
 name: Owner
 
 on:
-  pull_request:
+  workflow_dispatch:
 
 env:
-  OWNER: ${{ github.event.pull_request.head.repo.owner.login }}
+  OWNER: ${{ github.event.pull_request.user.login }}
 
 jobs:
-  first:
-    name: first test
+  final:
     runs-on: ubuntu-22.04
     permissions:
       contents: read
@@ -16,4 +15,9 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - run: echo ${{ env.OWNER }}
+      - name: collect status
+        run: |
+          echo "${{ env.OWNER }}"
+          echo "$GITHUB_ACTOR"
+          echo "OWNER=$GITHUB_ACTOR" >> $GITHUB_ENV
+          echo "${{ env.OWNER }}"
