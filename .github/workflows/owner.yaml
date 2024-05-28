@@ -18,6 +18,6 @@ jobs:
       - name: collect status
         run: |
           echo "${{ env.OWNER }}"
-          echo "$GITHUB_ACTOR"
-          echo "OWNER=$GITHUB_ACTOR" >> $GITHUB_ENV
+          echo "${GITHUB_ACTOR}"
+          echo "OWNER=${GITHUB_ACTOR}" >> $GITHUB_ENV
           echo "${{ env.OWNER }}"
