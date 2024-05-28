@@ -1,43 +1,69 @@
 name: Founder
 
 on:
-  workflow_dispatch:
-    inputs:
-      action:
-        description: "deploy or remove"
-        required: true
-        type: choice
-        options:
-          - deploy
-          - remove
-      ticket:
-        description: "JIRAチケット名(ex:SRE-2371)"
-        required: true
-      cluster-number:
-        description: "clusterの識別子(複数作る場合には重複に注意)"
-        required: true
-        default: '1'
-      auto-start:
-        description: "DBを9時に自動起動させるならチェック"
-        required: true
-        type: boolean
-      need-snapshot:
-        description: "削除前のsnapshotが必要ならチェック"
-        required: true
-        type: boolean
-
-env:
-  OWNER: steve
+  pull_request:
 
 jobs:
-  first:
-    name: first test
+  job0:
     runs-on: ubuntu-22.04
     permissions:
       contents: read
       id-token: write
     timeout-minutes: 15
     steps:
+      - run: echo "job0"
+  job1:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - run: echo "job1"
+  job2:
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - run: exit 1
+  job3:
+    needs: job2
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
+      - run: echo "job3"
+  final:
+    needs: [job0, job1, job2, job3]
+    runs-on: ubuntu-22.04
+    if: always()
+    permissions:
+      contents: read
+      id-token: write
+    timeout-minutes: 15
+    steps:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - run: echo "${{ github.event.inputs.need-snapshot }}"
-      - run: echo "${{ github.event.inputs.auto-start }}"
+      - name: collect status
+        run: |
+          # Create a status summary based on the results of previous jobs
+          echo "job0 result: ${{ needs.job0.result }}" >> status.txt
+          echo "job1 result: ${{ needs.job1.result }}" >> status.txt
+          echo "job2 result: ${{ needs.job2.result }}" >> status.txt
+          echo "job3 result: ${{ needs.job2.result }}" >> status.txt
+          cat status.txt
+
+      - name: check status
+        run: |
+          all_branch=$(git branch -r)
+          all_status=$(cat status.txt)
+          if  [[ $all_status == *"failure"* ]]; then
+            echo "failure"
+          elif [[ $all_status == *"cancelled"* ]]; then
+            echo "canceleed"
+          else
+            echo "success"
+          fi
