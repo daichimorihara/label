@@ -3,9 +3,6 @@ name: Owner
 on:
   workflow_dispatch:
 
-env:
-  OWNER: ${{ github.event.pull_request.user.login }}
-
 jobs:
   final:
     runs-on: ubuntu-22.04
