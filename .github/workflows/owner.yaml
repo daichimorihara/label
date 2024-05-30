@@ -3,6 +3,7 @@ name: Owner
 on:
   workflow_dispatch:
 
+
 jobs:
   final:
     runs-on: ubuntu-22.04
@@ -14,4 +15,6 @@ jobs:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
       - name: collect status
         run: |
-          echo "{\"owner\": \"${GITHUB_ACTOR}\", \"autoStart\": \"true\"}"
+          owner=${GITHUB_ACTOR}
+          echo "OWNER=$owner" >> $GITHUB_ENV
+          echo "${{ env.OWNER }}"
