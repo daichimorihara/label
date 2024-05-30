@@ -15,6 +15,5 @@ jobs:
       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
       - name: collect status
         run: |
-          owner=${GITHUB_ACTOR}
-          echo "OWNER=$owner" >> $GITHUB_ENV
+          echo "OWNER=${GITHUB_ACTOR}" >> $GITHUB_ENV
           echo "${{ env.OWNER }}"
