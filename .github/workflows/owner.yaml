@@ -24,6 +24,7 @@ jobs:
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             echo "ACTOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
           elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          
             echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
           fi
 
