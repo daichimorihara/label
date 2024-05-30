@@ -23,7 +23,7 @@ jobs:
         run: |
           if [ "${{ github.event_name }}" == "pull_request" ]; then
             echo "ACTOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
           fi
 
@@ -31,3 +31,8 @@ jobs:
         run: |
           echo "not env: $ACTOR"
           echo "env: ${{ env.ACTOR }}"
+
+      - name: Print the environment variable
+        run: |
+          echo "not env: $OWNER"
+          echo "env: ${{ env.OWNER }}"    
