@@ -3,11 +3,6 @@ name: Owner
 on:
   workflow_dispatch:
 
-env:
-  AWS_REGION: ap-northeast-1
-  AWS_ASSUME_ROLE: arn:aws:iam::131151490157:role/customer-pc-pd-cicd-role
-  AWS_ROLE_SESSION_NAME: GitHub_to_AWS_via_FederatedOIDC
-
 jobs:
   final:
     runs-on: ubuntu-22.04
@@ -21,4 +16,18 @@ jobs:
         run: |
           owner="${{ github.actor }}"
           echo "OWNER=$owner" >> $GITHUB_ENV
-          echo "${{ env.OWNER }}"
+          echo "env: ${{ env.OWNER }}"
+          echo "not env: $OWNER"
+
+      - name: Set conditional environment variable
+        run: |
+          if [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "ACTOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
+          elif [ "${{ github.event_name }}" == "pull_request" ]; then
+            echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
+          fi
+
+      - name: Print the environment variable
+        run: |
+          echo "not env: $ACTOR"
+          echo "env: ${{ env.ACTOR }}"
