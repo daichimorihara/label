@@ -1,0 +1,40 @@
+# name: Sync with AWS CodeCommit
+
+# on:
+#   push:
+
+# concurrency:
+#   group: cd-${{ github.workflow }}-${{ github.event.label.name }}-${{ github.ref }}
+#   cancel-in-progress: true
+
+# env:
+#   AWS_ASSUME_ROLE: arn:aws:iam::131151490157:role/ecr-pd-cicd-role
+#   AWS_REGION: ap-northeast-1
+
+# jobs:
+#   sync_codecommit:
+#     name: Sync source code with AWS CodeCommit
+#     runs-on: ubuntu-22.04
+#     permissions:
+#       contents: read
+#       id-token: write
+#     timeout-minutes: 15
+#     steps:
+#       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
+
+#       - name: Configure AWS Credentials
+#         uses: aws-actions/configure-aws-credentials@8c3f20df09ac63af7b3ae3d7c91f105f857d8497 # v4.0.0 commit hash
+#         with:
+#           role-to-assume: ${{ env.AWS_ASSUME_ROLE }}
+#           aws-region: ${{ env.AWS_REGION }}
+
+#     - name: Configure Git
+#       run: |
+#         git config --global user.name "github-actions[bot]"
+#         git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+#     - name: Sync with AWS CodeCommit
+#       run: |
+#         git remote add codecommit https://git-codecommit.${{ env.AWS_REGION }}.amazonaws.com/v1/repos/park-direct-backend
+#         git fetch codecommit
+#         git push codecommit main

@@ -1,8 +1,7 @@
 name: Merge Test
 
 on:
-  pull_request:
-    types: [labeled, unlabeled, closed]
+  push:
 
 jobs:
   final:
