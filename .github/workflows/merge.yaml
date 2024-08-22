@@ -1,11 +1,7 @@
 name: Merge Test
 
 on:
-  push:
-    branches:
-      - owner
-
-
+  pull_request:
 
 
 jobs:
