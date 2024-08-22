@@ -18,5 +18,6 @@ jobs:
           echo "The current run ID is ${{ github.run_id }}"
           echo "${{ github.base_ref }}"
           echo "${{ github.ref_name }}"
-          echo "${{ github.ref }}"                                
+          echo "${{ github.ref }}"  
+          echo "effe"                              
 
