@@ -21,5 +21,5 @@ jobs:
           echo "${{ github.base_ref }}"
           echo "${{ github.ref_name }}"
           echo "${{ github.ref }}"  
-          echo "effe"                              
+          echo "this should not be triggered"                              
 
