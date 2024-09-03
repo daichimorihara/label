@@ -1,41 +1,41 @@
-name: Sync to AWS CodeCommit
+# name: Sync to AWS CodeCommit
 
-on:
-  push:
-    branches:
-      - develop
-      - staging
-      - master
+# on:
+#   push:
+#     branches:
+#       - develop
+#       - staging
+#       - master
 
-env:
-  AWS_REGION: ap-northeast-1
-  AWS_ASSUME_ROLE: arn:aws:iam::014498664832:role/github-action
+# env:
+#   AWS_REGION: ap-northeast-1
+#   AWS_ASSUME_ROLE: arn:aws:iam::014498664832:role/github-action
 
-permissions:
-  id-token: write
-  contents: read
+# permissions:
+#   id-token: write
+#   contents: read
 
-jobs:
-  SyncToCodeCommit:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+# jobs:
+#   SyncToCodeCommit:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Git clone the repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: ${{ env.AWS_ASSUME_ROLE }}
-          role-session-name: github-action
-          aws-region: ${{ env.AWS_REGION }}
+#       - name: Configure AWS
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           role-to-assume: ${{ env.AWS_ASSUME_ROLE }}
+#           role-session-name: github-action
+#           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Push to CodeCommit
-        run: |
-          REPO_FULL_NAME="${{ github.repository }}"
-          REPO_NAME="${REPO_FULL_NAME##*/}"
-          git config --global credential.helper '!aws codecommit credential-helper $@'
-          git config --global credential.UseHttpPath true
-          git remote add codecommit https://git-codecommit.${{ env.AWS_REGION }}.amazonaws.com/v1/repos/${REPO_NAME}
-          git push codecommit HEAD:refs/heads/${{ github.ref_name }} --force
+#       - name: Push to CodeCommit
+#         run: |
+#           REPO_FULL_NAME="${{ github.repository }}"
+#           REPO_NAME="${REPO_FULL_NAME##*/}"
+#           git config --global credential.helper '!aws codecommit credential-helper $@'
+#           git config --global credential.UseHttpPath true
+#           git remote add codecommit https://git-codecommit.${{ env.AWS_REGION }}.amazonaws.com/v1/repos/${REPO_NAME}
+#           git push codecommit HEAD:refs/heads/${{ github.ref_name }} --force

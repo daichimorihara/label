@@ -1,39 +1,39 @@
-name: Owner
+# name: Owner
 
-on:
-  workflow_dispatch:
+# on:
+#   workflow_dispatch:
 
-jobs:
-  final:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      id-token: write
-    timeout-minutes: 15
-    steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - name: collect status
-        run: |
-          owner="${{ github.actor }}"
-          echo "OWNER=$owner" >> $GITHUB_ENV
-          echo "env: ${{ env.OWNER }}"
-          echo "not env: $OWNER"
+# jobs:
+#   final:
+#     runs-on: ubuntu-22.04
+#     permissions:
+#       contents: read
+#       id-token: write
+#     timeout-minutes: 15
+#     steps:
+#       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
+#       - name: collect status
+#         run: |
+#           owner="${{ github.actor }}"
+#           echo "OWNER=$owner" >> $GITHUB_ENV
+#           echo "env: ${{ env.OWNER }}"
+#           echo "not env: $OWNER"
 
-      - name: Set conditional environment variable
-        run: |
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            echo "ACTOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
-          elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+#       - name: Set conditional environment variable
+#         run: |
+#           if [ "${{ github.event_name }}" == "pull_request" ]; then
+#             echo "ACTOR=${{ github.event.pull_request.user.login }}" >> $GITHUB_ENV
+#           elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
           
-            echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
-          fi
+#             echo "ACTOR=${{ github.actor }}" >> $GITHUB_ENV
+#           fi
 
-      - name: Print the environment variable
-        run: |
-          echo "not env: $ACTOR"
-          echo "env: ${{ env.ACTOR }}"
+#       - name: Print the environment variable
+#         run: |
+#           echo "not env: $ACTOR"
+#           echo "env: ${{ env.ACTOR }}"
 
-      - name: Print the environment variable
-        run: |
-          echo "not env: $OWNER"
-          echo "env: ${{ env.OWNER }}"    
+#       - name: Print the environment variable
+#         run: |
+#           echo "not env: $OWNER"
+#           echo "env: ${{ env.OWNER }}"    

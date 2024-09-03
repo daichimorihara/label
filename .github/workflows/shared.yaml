@@ -1,38 +1,36 @@
-name: Shared Workflow
+# name: Shared Workflow
 
-on:
-  workflow_call:
-    inputs:
-      repo-full-name:
-        required: true
-        type: string
+# on:
+#   workflow_call:
+#     inputs:
+#       repo-full-name:
+#         required: true
+#         type: string
 
-jobs:
-  reusable_workflow_job:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Git clone the repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
+# jobs:
+#   reusable_workflow_job:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Git clone the repository
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 0
 
-      - name: Configure AWS
-        uses: aws-actions/configure-aws-credentials@v4
-        with:
-          role-to-assume: arn:aws:iam::014498664832:role/github-action
-          role-session-name: github-action
-          aws-region: ap-northeast-1
+#       - name: Configure AWS
+#         uses: aws-actions/configure-aws-credentials@v4
+#         with:
+#           role-to-assume: arn:aws:iam::014498664832:role/github-action
+#           role-session-name: github-action
+#           aws-region: ap-northeast-1
 
-      - name: Push to CodeCommit
-        run: |
-          REPO_FULL_NAME="${{ inputs.repo-full-name }}"
-          REPO_NAME="${REPO_FULL_NAME##*/}"
-          git config --global credential.helper '!aws codecommit credential-helper $@'
-          git config --global credential.UseHttpPath true
-          git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/${REPO_NAME}
-          git push codecommit HEAD:refs/heads/${{ github.ref_name }} --force
-
-
+#       - name: Push to CodeCommit
+#         run: |
+#           REPO_FULL_NAME="${{ inputs.repo-full-name }}"
+#           REPO_NAME="${REPO_FULL_NAME##*/}"
+#           git config --global credential.helper '!aws codecommit credential-helper $@'
+#           git config --global credential.UseHttpPath true
+#           git remote add codecommit https://git-codecommit.ap-northeast-1.amazonaws.com/v1/repos/${REPO_NAME}
+#           git push codecommit HEAD:refs/heads/${{ github.ref_name }} --force
 
 
 
@@ -46,27 +44,29 @@ jobs:
 
 
 
-jobs:
-  final:
-    runs-on: ubuntu-22.04
-    permissions:
-      contents: read
-      id-token: write
-    timeout-minutes: 15
 
-    steps:
-      - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
-      - name: echo when unlabeled
-        run: |
-          echo "The current run ID is ${{ github.run_id }}"
-          echo "${{ github.base_ref }}"
-          echo "${{ github.ref_name }}"
-          echo "${{ github.ref }}"  
-          echo "this should nofewt be triggered"  
-          echo "${{ github.repository }}"
-          REPO_FULL_NAME="${{ github.repository }}"
-          REPO_NAME="${REPO_FULL_NAME##*/}"
-          echo "${REPO_NAME}"
+
+# jobs:
+#   final:
+#     runs-on: ubuntu-22.04
+#     permissions:
+#       contents: read
+#       id-token: write
+#     timeout-minutes: 15
+
+#     steps:
+#       - uses: actions/checkout@3df4ab11eba7bda6032a0b82a6bb43b11571feac # v4.0.0 commit hash
+#       - name: echo when unlabeled
+#         run: |
+#           echo "The current run ID is ${{ github.run_id }}"
+#           echo "${{ github.base_ref }}"
+#           echo "${{ github.ref_name }}"
+#           echo "${{ github.ref }}"  
+#           echo "this should nofewt be triggered"  
+#           echo "${{ github.repository }}"
+#           REPO_FULL_NAME="${{ github.repository }}"
+#           REPO_NAME="${REPO_FULL_NAME##*/}"
+#           echo "${REPO_NAME}"
 
                                       
 
